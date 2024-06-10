@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+Summary of my Approach for this Task:  <br/>
+**Objective**: Create a Next.js application with at least two pages and implement  <br/>
+client-side navigation between them.  <br/>
 
-First, run the development server:
+Install:
+1) Set Up a New Next.js Application <br/>
+    Initialize the Project:  <br/>
+    npx create-next-app@latest myname
+    cd my-next-app <br/>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2) Create Pages and Implement Client-Side Navigation  <br/>
+    Create Two New Pages:  <br/>
+    Product/pages.tsx  <br/>
+     rou/pages.tsx  <br/>
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3) Integrate Mock API with Next.js  <br/>
+Fetch Data in Product/pages.tsx:  <br/>
 
-## Learn More
+"use client";
+// import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-To learn more about Next.js, take a look at the following resources:
+export default function Product() {
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  const [product,setProduct] = useState([])
+  const Router = useRouter()
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let response = await fetch("https://dummyjson.com/products");
+        let data = await response.json();
+        console.log(data);
+        setProduct(data.products)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    fetchData();
+  }, []);
 
-## Deploy on Vercel
+  return (
+    <div>
+      <h1 className="text-center">Product  <button style={{width:"100px",marginTop: '16px'}} className="btn btn-outline-info gap-2 mb-4" onClick={() => Router.push("/")}>Go back</button></h1>
+     
+      {
+        product.map((item)=>(
+          <h3>Name of the Product:  {item.title}, and the Price is : {item.price}</h3>      
+        ))
+      }
+    </div>
+  );
+}
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+Project Structure <br/>
+my-next-app/ <br/>
+│
+├──node_modules <br/>
+├──public <br/>
+├──src <br/>
+│   ├── app  <br/>
+│   │   ├── image  <br/>
+│   │   ├── product  <br/>
+│   │   │ ├── page.tsx  <br/>
+│   │   ├── rou  <br/>
+│   │   │ ├── page.tsx  <br/> 
+│   │   ├── layout.tsx  <br/>
+│   │   ├── page.tsx  <br/> 
+│   │   ├── style.css <br/>
+├──package.json <br/>
+├──package-lock.json  <br/>
+
+
+  
